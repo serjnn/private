@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492.44 253.56">
+    <defs>
+        <linearGradient id="linear-gradient" x1="12.56" y1="126.64" x2="480.66" y2="126.64" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#dddc65"/>
+            <stop offset="1" stop-color="#ca6f14"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="63.41" y1="9.4" x2="492.44" y2="9.4" xlink:href="#linear-gradient"/>
+        <linearGradient id="linear-gradient-3" x1="0" y1="244.16" x2="429.58" y2="244.16" xlink:href="#linear-gradient"/>
+    </defs>
+    <path fill="url(#linear-gradient)"
+          d="M471,33.17c-5.43-.31-11.63-.28-17.09-.27-23.19.05-46.38,0-69.57,0q-138.7,0-277.42,0c-11.59,0-34.75-.1-34.75-.1-6.71,0-12.61,0-15.89,10.92l-40.71,152-1.77,6.76C10,215.1,15,220.06,28.38,220.06c0,0,9.13-.17,13.61-.18q90.9-.07,181.8,0v0h92.74q22.07,0,44.12.07c18.89.1,37.78.29,56.67.41,3.41,0,6.89.32,10.23-.21,5.21-.83,8-4.52,8.84-9.68L480.24,44.73C481.93,37.58,478.48,33.59,471,33.17Z"/>
+    <polygon fill="url(#linear-gradient-2)" points="487.79 18.8 63.41 18.8 68.32 0 492.44 0 487.79 18.8"/>
+    <polygon fill="url(#linear-gradient-3)" points="424.93 253.56 0 253.56 4.97 234.76 429.58 234.76 424.93 253.56"/>
+    <path fill="#424242" d="M198.62,180.63H175.14l-12.2-38.51-28.09,38.51H110.59l40.86-54.19L134.56,76.93h22.7l10.86,36.74,25.75-36.74h24.4l-38.66,51.42Z"/>
+    <path fill="#424242" d="M236.85,151l54.19-74h26.25l-21.92,103.7H275.79Q282.47,149,286,132.26t6-26.89l-.57-.14-54.19,75.4h-26.6L232.6,76.93h19.93L242.1,126q-4.6,20-6,25Z"/>
+    <path fill="#424242" d="M357.08,180.63H335.45l18-85.4h-25l3.9-18.3H404l-3.9,18.3h-25Z"/>
+</svg>
