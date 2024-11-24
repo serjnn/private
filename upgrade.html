@@ -186,117 +186,595 @@
 </header>
 
 <div class="aside-content" id="live-drops">
+  <style>
+    .aside-content {
+      overflow: hidden;
+      width: 250px;
+      height: 100%;
+      position: fixed;
+      top: 68px;
+      left: 0;
+      z-index: 4;
+    }
 
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
+    .aside-content .item {
+      position: relative;
+      height: 100px;
+      cursor: default;
+      width: 190px;
+      -webkit-box-shadow: inset -12px 0 6px -11px #110f0f;
+      -moz-box-shadow: inset -12px 0 6px -11px #110f0f;
+      box-shadow: inset -12px 0 6px -11px #110f0f;
+      border-bottom: 1px solid #151920;
+    }
+
+    .aside-content .item.item-loading .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+      margin: 0 auto 8px;
+    }
+
+    .aside-content .item.item-loading .base {
+      border-color: #979797;
+      background-color: rgba(104, 104, 104, 0.2);
+    }
+
+    .aside-content .item.item-loading .line {
+      height: 11px;
+      margin: 0 auto 3px;
+    }
+
+    .aside-content .item.item-loading .line:nth-child(2) {
+      width: 90px;
+    }
+
+    .aside-content .item.item-loading .line:nth-child(3) {
+      width: 110px;
+    }
+
+    .aside-content .item.item-loading .line,
+    .aside-content .item.item-loading .circle {
+      transform: translateY(13px);
+      animation: wave 1.7s infinite linear forwards;
+      -webkit-animation: wave 1.7s infinite linear forwards;
+      background: linear-gradient(to right, #444444 8%, #797979 18%, #444444 33%);
+      background-size: 800px 104px;
+    }
+
+    .aside-content .item.play {
+      overflow: hidden;
+    }
+
+    .aside-content .item.anim-init {
+      max-height: 0;
+      height: 0;
+    }
+
+    .aside-content .item>div {
+      height: 100%;
+      display: block;
+      box-sizing: border-box;
+      border-left: 3px solid #ddd;
+      text-decoration: none;
+    }
+
+    .aside-content .item>div.base {
+      border-color: #ddd;
+      background-color: rgba(221, 221, 221, 0.2);
+    }
+
+    .aside-content .item>div.base .hover {
+      background-color: rgba(221, 221, 221, 0.73);
+    }
+
+    .aside-content .item>div.restricted {
+      border-color: #8a2be2;
+      background-color: rgba(138, 43, 226, 0.2);
+    }
+
+    .aside-content .item>div.restricted .hover {
+      background-color: rgba(138, 43, 226, 0.73);
+    }
+
+    .aside-content .item>div._unknown {
+      border-color: #595656;
+      background-color: rgba(89, 86, 86, 0.2);
+    }
+
+    .aside-content .item>div._unknown .hover {
+      background-color: rgba(89, 86, 86, 0.73);
+    }
+
+    .aside-content .item>div.mil-spec {
+      border-color: #4169e1;
+      background-color: rgba(65, 105, 225, 0.2);
+    }
+
+    .aside-content .item>div.mil-spec .hover {
+      background-color: rgba(65, 105, 225, 0.73);
+    }
+
+    .aside-content .item>div.classified {
+      border-color: #e334c8;
+      background-color: rgba(227, 52, 200, 0.2);
+    }
+
+    .aside-content .item>div.classified .hover {
+      background-color: rgba(227, 52, 200, 0.73);
+    }
+
+    .aside-content .item>div.industrial {
+      border-color: #279bf0;
+      background-color: rgba(39, 155, 240, 0.2);
+    }
+
+    .aside-content .item>div.industrial .hover {
+      background-color: rgba(39, 155, 240, 0.73);
+    }
+
+    .aside-content .item>div.covert {
+      border-color: #ea2f2f;
+      background-color: rgba(234, 47, 47, 0.2);
+    }
+
+    .aside-content .item>div.covert .hover {
+      background-color: rgba(234, 47, 47, 0.73);
+    }
+
+    .aside-content .item>div.rare {
+      border-color: #e9bf0c;
+      background-color: rgba(233, 191, 12, 0.2);
+    }
+
+    .aside-content .item>div.rare .hover {
+      background-color: rgba(233, 191, 12, 0.73);
+    }
+
+    .aside-content .item:hover:not(.item-loading) .hover {
+      -o-transform: translateX(-3px);
+      -ms-transform: translateX(-3px);
+      -moz-transform: translateX(-3px);
+      -webkit-transform: translateX(-3px);
+      transform: translateX(-3px);
+    }
+
+    .aside-content .item:hover:not(.item-loading) .item-wrapper {
+      opacity: 0;
+    }
+
+    .aside-content .item .item-wrapper {
+      -webkit-transition: all 0.2s ease;
+      -moz-transition: all 0.2s ease;
+      -o-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+      padding: 0 5px;
+      opacity: 1;
+      height: 100%;
+    }
+
+    .aside-content .item .item-wrapper .drop-image {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .aside-content .item .item-wrapper .title {
+      color: #c3dcff;
+      font-size: 11px;
+      text-align: center;
+      overflow: hidden;
+      width: 100%;
+      height: 34px;
+    }
+
+    .aside-content .item .hover {
+      position: absolute;
+      top: 0;
+      -o-transform: translateX(-253px);
+      -ms-transform: translateX(-253px);
+      -moz-transform: translateX(-253px);
+      -webkit-transform: translateX(-253px);
+      transform: translateX(-253px);
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+      height: 100%;
+      text-align: center;
+      width: 250px;
+      z-index: 2;
+      display: flex;
+    }
+
+    .aside-content .item .hover .drop-left {
+      height: 100%;
+      position: relative;
+      text-align: center;
+      width: 190px;
+    }
+
+    .aside-content .item .hover .drop-left .drop-name {
+      font-size: 13px;
+      color: #fff;
+      display: inline-block;
+      margin-top: 9px;
+      margin-bottom: 5px;
+    }
+
+    .aside-content .item .hover .drop-left .drop-name span {
+      font-size: 11px;
+    }
+
+    .aside-content .item .hover .drop-left .ico-time {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-top: 20px;
+      margin-left: 25px;
+    }
+
+    .aside-content .item .hover .drop-left .drop-thumb {
+      width: 62px;
+      height: 55px;
+      background-repeat: no-repeat;
+      background-position-x: center;
+      background-size: cover;
+      margin: 3px auto 0;
+      display: block;
+    }
+
+    .aside-content .item .hover .drop-left .drop-thumb>svg {
+      width: 100%;
+      height: 73%;
+      margin-top: 8px;
+    }
+
+    .aside-content .item .hover .user-right {
+      padding-top: 9px;
+      flex-grow: 1;
+    }
+
+    .aside-content .item .hover .user-right .user-thumb {
+      display: inline-block;
+      width: 36px;
+    }
+
+    .aside-content .item .hover .user-right .user-thumb>img {
+      width: 100%;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .aside-content .item .hover .user-right .user-item {
+      width: 65px;
+      position: absolute;
+      right: 10px;
+      top: 42px;
+    }
+
+    .aside-content .item .hover .user-right .user-item>img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+  <script>
+    function addDrops() {
+      const drops = document.querySelector('#live-drops');
+      const skins = [{
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLu8JAllx8zJfAJF7dG7lb-PmOfkP77DqXtZ6dZ029bN_Iv9nGu4qgE7NnfzJtTHJFNtYF3Y-1Dsku_pgp-4u5TIyXUy7CBxs3qOmROyg01IbrNum7XAHrtnOF0c/360fx360f",
+      name: "★ Штык-нож | Гамма-волны",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot6-iFAR17PLddgJB5N27kYyOmPn1OqnUqWdY781lteXA54vwxlWw-hduNW_xcIeRegc3YlmE8gS8wrvv1MS86s-dzSdk6yYj5HzYyRKpwUYb8NvXBjQ/360fx360f",
+      name: "AUG | Хамелеон",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV092lnYmGmOHLPr7Vn35c18lwmO7Eu92milbl-BZsZGiiLNKdJFc8Mg7V_1S_xuzshZK97c_In3pruCJx4X_D30vgyZM--n4/360fx360f",
+      name: "AK-47 | Азимов",
+      rarity: "Restricted"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo6m1FBRp3_bGcjhQ09-jq5WYh8j_OrfdqWhe5sN4mOTE8bP4jVC9vh4DPzixc9OLcQU2Z1vQ_FfrwbvnhJ6-uJ_PnXAyuCUmtHfenRW00h5MPOVt1_KYHULeWfL4W83H_Q/360fx360f",
+      name: "USP-S | Подтвержденное убийство",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopujwezhzw8zGZDZH_8iknZCOqPDmNr7fqWZU7Mxkh9bN9J7yjRrj8kBqZDqgII_GdA89YlnU8lLqyei615fqu5TLynJj6ycl5ivdmhW_n1gSOe9RdDBG/360fx360f",
+      name: "P250 | Ядерная угроза",
+      rarity: "Restricted"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FABz7PLfYQJO5dG0m7-Ymfb_NoTck29Y_chOhujT8om7jlLlqRBlNzvwJYGXd1I6Y1HYqATowuu5hcfq7Z6bwXc2sykjtC3emgv330-TsefroA/360fx360f",
+      name: "AWP | Двойственность",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV0924gYKChMj5Nr_Yg2Zu5MRjjeyPrNjziQ3h_0RoMj_xJdSSIFdqZwvW-Fe9yenuhJDqvpTBnXZj6Cgit2GdwUIbM6Z52A/360fx360f",
+      name: "AK-47 | Легион Анубиса",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposr-kLAtl7PDdTjlH7duJhJKCmePnJ6nUl2Zu5cB1g_zMyoD0mlOx5UJpYjj2d9LAdAI5YlqE-Vm_wuy715Xvv5iby3prs3IjtHrVmEez0xhSLrs4cktNb_c/360fx360f",
+      name: "Desert Eagle | Поток информации",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovrG1eVcwg8zLZAJSvozmxL-PkvT4OrXUqWdY781lteXA54vwxgOy_kRtZ2z1I4LEd1M6YArTqFnrxri6gpbu6ZmfnyAxvyd3tnmLlxGpwUYbV-3wxJw/360fx360f",
+      name: "P2000 | Сорвиголова",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo6m1FBRp3_bGcjhQ09-jq5WYh8jgPITZk2dd18h0juDU-LP5iUazrl0_Nj_6d9eRcVVrZ1iD_FDvwu3r0J7t6MmbmCRhunEm7XeOyhS-hhtJcKUx0kcRs1rK/360fx360f",
+      name: "USP-S | Билет в ад",
+      rarity: "Restricted"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgporrf0e1Y07PDdTiVPvYznwL-KmuL4Nq_ulGdE7fp8j-3I4IHKhFWmrBZyZ2z0LI_AdAY7aFDX-Qe3xLi9h8Po7ZXIyCAw7iBw5S6PnhLh0BgYOvsv26JDy_wWDg/360fx360f",
+      name: "XM1014 | Погребённый",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV08-iho-Fksj5Nr_Yg2Zu5MRjjeyP8I6l3QGyrRBsMWvxcNLAI1NqZFmG-1nsxOy-1J7o6Z_An3tj7HUn52GdwUImgcOvfw/360fx360f",
+      name: "AK-47 | Стальная дельта",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhoyszJemkV4N27q4KcqPv9NLPFqWdQ-sJ0xOqUpdj2iVbm_Es9Z2D2IdOccAQ7ZA2F-FG8w-3rhcTpvsnJwHph6yQ8pSGKy_qypRo/360fx360f",
+      name: "AK-47 | Черный глянец",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopbmkOVUw7ODYTi5B7c7kxL-Yg-X9OL7DqW9E-9FOhuDG_ZjKhFWmrBZyY2H3JtLHJlA-Nw3X-1XtyOy5g5W47p7Ozydiv3Mgs3eOnRTlh0xJaPsv26JVqJWlhA/360fx360f",
+      name: "SCAR-20 | Надрыв",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpouLWzKjhoyszbdDxR5dizq4KZluH7DLbUkmJE5fp9i_vG8MKhi1KxrRVvMDqnLdScJgM5YF7SrAW2kOvnhJa7upTOyntm6HIgt3_fgVXp1kUZZcr4/360fx360f",
+      name: "Nova | Буря",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotLO_JAlf1OD3YS197tWsm460n_bmJb7Cgm5D18l4jeHVyoD0mlOx5UVpZz3xItKRcVI5NFzV8lLvwbu70JPpvMiYzyAxvCkl7XrVmRy_1UtSLrs45ecDBro/360fx360f",
+      name: "ПП-19 «Бизон» | Жнец",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou7umeldf0v73fyhB4Nm3hr-YnOL4P6iCqWZQ65QhteXI8oTht1i1uRQ5fW31I9SWcAM-Z13V-FPrxOzrjZS4u86fyHBm6HVx53razEHlhx5FbudxxavJTauCii8/360fx360f",
+      name: "MAC-10 | Ядерный сад",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopb3wflFf0Ob3YjoXuY-JhoGHm-7LPr7Vn35c18lwmO7Eu4r23APhqUtpY2n2ctWTdwA4MFrSqFXrxL3mhpa77p_IzHVjuCBwsXjD30vgg27QnWM/360fx360f",
+      name: "SG 553 | Integrale",
+      rarity: "Mil-Spec"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo7e1f1Jf0Ob3ZDBS09-5hpCEhfb4DLbUkmJE5fp9i_vG8MKj0Vbn-UZpZzj3doOXelI-aFnT-VC3kOi6gsfvucycnHNquXJw5SvYgVXp1vBvimUq/360fx360f",
+      name: "UMP-45 | Капрал",
+      rarity: "Mil-Spec"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09-5lpKKqPrxN7LEm1Rd6dd2j6eQ9N2t2wK3-ENsZ23wcIKRdQE2NwyD_FK_kLq9gJDu7p_KyyRr7nNw-z-DyIFJbNUz/360fx360f",
+      name: "AK-47 | Красная Линия",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhnwMzJemkV0966m4-PhOf7Ia_ummJW4NFOhujT8om73ASy-0RqNW-hLYTAcg5vMgvT_Vm4wefthpO_v8yYwHVlsicr4C3fzQv330_79eypFA/360fx360f",
+      name: "AK-47 | Кровавый Спорт",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhz2v_Nfz5H_uO1gb-Gw_alIITXk25V4ct2te_T8ILvkWu5rhc1JjSceNfXJVMgZliD-Vm9k7vqjJbpvsvJmiBmvHMm4XjcmBa11R0ebrE7g6efHA6bALsJQvdUVNRl8A/360fx360f",
+      name: "M4A1-S | Эмфорозавр-S",
+      rarity: "Restricted"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo6m1FBRp3_bGcjhQ09-jq5WYh8j3Jq_um25V4dB8teXA54vwxle2qRA4YzyiI46SIA45N1rSqFS9l-jpgsDqv5WcmCAyvCMh5X3cnBKpwUYblsbKgI4/360fx360f",
+      name: "USP-S | Кортекс",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DfVlxgLQFFibKkJQN3wfLYYgJK7dKyg5KKh8j4NrrFnm5D8fp1n-rV4Y3ljWu5rhc1JjSceNfXJVMgZFuDq1G5lb_u1pa0tczMzncxvHYl4XaImhDh10wYZrc80fGXHA6cArsJQvdGguk86w/360fx360f",
+      name: "Обмотки рук | Скотч",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou7umeldf0Ob3fDxBvYyJmoGIhfLLPr7Vn35c18lwmO7Eu42giVbg-RY4MTylJYSSdgQ6M1_YrlS4x-_vjZPov5nNyndjuCghtnnD30vgC8iQ-N0/360fx360f",
+      name: "MAC-10 | Дискотехника",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJV5dCykomZksj5Nr_Yg2Zu5MRjjeyP9tWh0FXnqkFqN2miI9OQdlNraF2E_ADrxLzujJa7vcmczSFgviV3tGGdwULCeAiZTA/360fx360f",
+      name: "AWP | Дикое пламя",
+      rarity: "Covert"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV09-5k5SDnvnzIITZk2pH8fp9i_vG8MKt3FW18xc9YmygJY7BIw4-MF3W-FC3kua5hZe_7czOnCdjsiEi4CyPgVXp1rT8Wct7/360fx360f",
+      name: "AK-47 | Ледяной уголь",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbaqKAxf0Ob3djFN79f7mImagvLnML7fglRc7cF4n-T--Y3nj1H68kVvYTvzJYacIA42MFHW-QLtl7vr0ZS_vpiYm3pi7HYl5CrUy0a00AYMMLI3Fd_03w/360fx360f",
+      name: "Glock-18 | Дух воды",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhjxszFJTwW09izh4-HluPxDKjBl2hU18h0juDU-LP5iUazrl1kazqmJY-dIFRrY1iB_gK7xOa6h8S6vZrJnCMy6SBx4ynfyRPj00odcKUx0jz3Bze9/360fx360f",
+      name: "M4A4 | Безлюдный Космос",
+      rarity: "Classified"
+    }, {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo6m1FBRp3_bGcjhQ09-jq5WYh8jxP77Wl2VF18h0juDU-LP5iUazrl05Zjzyd9KWcwU2MFnV_le-yem81MS4uZXOyyFm7CRzty6JyRHkhEsZcKUx0qcUSTBJ/360fx360f",
+      name: "USP-S | Стражник",
+      rarity: "Restricted"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoor-mcjhjxszcdD4b092lnYmGmOHLO77QgHJu5MRjjeyPrY6jiQOw-ERrNj30IIeXewVvMFqCqwDvk-6608PpucjMmiZrs3Rw7WGdwUJy6_wOcg/360fx360f",
+      name: "Tec-9 | Айзек",
+      rarity: "Mil-Spec"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopuP1FAR17OORIQJM48-ilYyMnvbLPr7Vn35c18lwmO7Eu4302gaxrRE-YTj3LIaQJ1A6Ml7T_wK_kOfu1sDvtMibzXdisiF2tHfD30vgZ0UIxp4/360fx360f",
+      name: "P90 | Ностальгия",
+      rarity: "Mil-Spec"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopujwezhoyszMZD5W_-O0mJWOqP_xMq3IqWdQ-sJ0xOyXptWg0Q3g8xVoYWGiIdXEcQE-ZV_R-VG2w-3p1JHqvpzOyXZg6XU8pSGKERKgXS0/360fx360f",
+      name: "P250 | Обменник",
+      rarity: "Mil-Spec"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotaDyfgZf1OD3cid9_9K3n4WYqOfhIavdk1RZ7cRnk9bN9J7yjRrk8hI6Zjv6ddSQIwM6ZQrT_FG-xr-7gZG_6JnAyHBjvyV27Xzfyh3hn1gSOSY2Vtae/360fx360f",
+      name: "CZ75-Auto | Сян-лю",
+      rarity: "Mil-Spec"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoor-mcjhnwMzcdD4b09qjloGZqPv9NLPFqWdQ-sJ0xLmR89qh2ATj8ktvZm_ycoOSIQ4-aQrS-QS3w-jv0MTp7ZvNynUx6Sc8pSGKjSLVKHA/360fx360f",
+      name: "Tec-9 | Ветеран",
+      rarity: "Mil-Spec"
+    },
+
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou7uifDhh3szFcDoV09-3gZOfnvTLP7LWnn9u5MRjjeyPpN-milayqko6YDqlLISXclA2NArV_1S4leq7gJLtu5vPmiRi6Sl35WGdwUIzS5JrHQ/360fx360f",
+      name: "MAG-7 | Насыщенная вода",
+      rarity: "Mil-Spec"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszcYzRA-cizq4GAw6DLPr7Vn35cppAlib-S8dumigTm8hJkMmn1JY7Hdg5rM1uD-FW4kunuhp-87ZXOzHR9-n51D2UtsBM/360fx360f",
+      name: "AK-47 | Пустынный повстанец",
+      rarity: "Covert"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot6-iFA957PLddgJW4864q4-ZlvnzNoTdn2xZ_Isk2euUpI2l2gaw-Es5Mmr6cdDDd1BoMw2E81O7xO-71pG4vcjIziFgpGB8siZU0y43/360fx360f",
+      name: "AUG | Янтарный шквал",
+      rarity: "Mil-Spec Grade"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot6-iFAR17PLddgJV5NWikYaKmfDLP7LWnn8fuJAgiLuQ8Y2hjQHiqEVoMj30LNPAelc4ZgnQr1jrw-3o1JLpvJybyGwj5HeowEWz1Q/360fx360f",
+      name: "AUG | Арктический волк",
+      rarity: "Restricted"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgporrf0e1Y07PLZTiVPvYznwL-YlOL5ManYl1RZ7cRnk6fAoNyljQTh-BVvNmGmdoDDJlU8MwmFqFO6ybvnhMK1uJ6cziZj6yIn-z-DyORWjMSs/360fx360f",
+      name: "XM1014 | Скумбрия",
+      rarity: "Mil-Spec Grade"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJfwObaZzRU7dCJlo-cnvLLO6LugW5T-_p8j-3I4IG73ALm_xc9YT_2IIPBIVQ8ZFnVrwO4wO_m0ZO1vZScynNnv3Mi4XyOnwv3308wbKcd5w/360fx360f",
+      name: "★ Нож Боуи | Кровавая паутина",
+      rarity: "Covert"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf1f_BYQJR4-O4nYeDg8j4OrzZgiVS7JMg2b2XpY7zjFLs_0tlamumJoPDclc6ZAmB-QDswOm9g8K4us_P1zI97cuqS5lK/360fx360f",
+      name: "★ Складной нож | Ночь",
+      rarity: "Covert"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotaDyfgZf0Ob3cicVueOmhoWInuT9PLXummJW4NE_i7nFpYn00VDt-RU6ajr2J4PGIFJvMFGD-lbvwL_mgMe5vZXImHph6D5iuyh7hT4MJQ/360fx360f",
+      name: "CZ75-Auto | Поул-позиция",
+      rarity: "Restricted"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpotaDyfgZf2-r3czFX6dSzjL-HnvD8J_WBxTlUvMch07CYrd-liQDhr0RoYGCnJIHDI1NoZ16C8lO3yL_uhZPqot2XnnI1PsT0/360fx360f",
+      name: "CZ75-Auto | Гексан",
+      rarity: "Mil-Spec Grade"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJB496klb-HnvD8J_XSkDkB68Ani-qQpNmkigC1-EM4azj7IIadc1NtZVvX-QLsl7-7gce4ot2XngYgmyTY/360fx360f",
+      name: "AWP | Красная Линия",
+      rarity: "Classified"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FABz7PLfYQJH9NOln4WHkuP7PYTZk2pH8Yso3-_H89qlige2rkdqYWzzdtWQdwNoZl7T-1m7xu6808S978yYwXZmpGB8sh1B_wRQ/360fx360f",
+      name: "AWP | Экзоскелет",
+      rarity: "Restricted"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJU6dW4q4iOluHtfe6GxT9S7ZZw2uqZp4jxiwDh-0I5YmilI9SQJgNsYArS_FK_l7zq0MOi_MOefXM-V9w/360fx360f",
+      name: "AWP | Капилляры",
+      rarity: "Mil-Spec Grade"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot6-iFABz7PLddgJW5Mm4kIWZhOP7Ibbum25V4dB8xOqS8d-ljAC1-EdpMjinLYWWJARoMFGB-wO2kui60JC9upiazyM2v3I8pSGK-SVxy2s/360fx360f",
+      name: "AUG | Кот-истребитель",
+      rarity: "Mil-Spec Grade"
+    },
+    {
+      image: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot6-iFAZt7PLddgJG6d2inL-JjsjwPLzWj1Rc7cF4n-SP89rxjAbs8hFkYGGmJoeddVM4Zl2G_gS2w-znhJPuvMzNy3di7yRx4GGdwUK5OXZdOg/360fx360f",
+      name: "AUG | Смертоносные пёсики",
+      rarity: "Classified"
+    },
+    ];
+
+      let droppedSkins = JSON.parse(localStorage.getItem("droppedSkins")) || [];
+
+  // Если все скины исчерпаны, обновляем список
+  if (droppedSkins.length >= skins.length) {
+    droppedSkins = [];
+  }
+
+  // Функция для добавления скина в ленту
+  function addSkinToDrop() {
+    // Отфильтровываем доступные скины (те, которые еще не выпали)
+    const filteredSkins = skins.filter(skin => !droppedSkins.includes(skin.name));
+
+    // Если все скины исчерпаны, обновляем список
+    if (filteredSkins.length === 0) {
+      droppedSkins = [];
+      localStorage.setItem("droppedSkins", JSON.stringify(droppedSkins));
+      return; // Выход, если все скины выпали
+    }
+
+    // Выбираем случайный скин из доступных
+    const randomSkin = filteredSkins[Math.floor(Math.random() * filteredSkins.length)];
+
+    // Определяем класс редкости для CSS
+    const rarityClass = randomSkin.rarity.toLowerCase();
+
+    // Генерируем HTML для нового элемента
+    const newDrop = `
+      <div class="item my-element">
+        <div class="skin ${rarityClass}">
+          <div class="item-wrapper">
+            <img class="drop-image" src="${randomSkin.image}" alt="${randomSkin.name}" loading="lazy" width="65" height="65">
+            <div class="title">
+              <span>${randomSkin.name}</span>
+              <span class="rarity"></span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-    <div class="item item-loading">
-    <div class="base">
-      <div class="item-wrapper">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-    </div>
-  </div>
-  
+    `;
+
+    // Добавляем новый элемент в начало контейнера
+    drops.innerHTML = newDrop + drops.innerHTML;
+
+    // Обновляем список выпавших скинов и сохраняем в localStorage
+    droppedSkins.push(randomSkin.name);
+    localStorage.setItem("droppedSkins", JSON.stringify(droppedSkins));
+  }
+  for (let i = 0; i < 10; i++) {
+      addSkinToDrop();
+    }
+
+  // Функция для зацикленного добавления скинов с случайным интервалом
+  function loopAddDrops() {
+    // Добавляем скин в ленту
+    addSkinToDrop();
+
+    // Случайный интервал для следующего добавления (между 270ms и 760ms)
+    const randomInterval = Math.floor(Math.random() * 450 + 400);
+
+    // Рекурсивно запускаем следующий цикл добавления
+    setTimeout(loopAddDrops, randomInterval);
+  }
+
+  // Стартуем бесконечную ленту
+  loopAddDrops();
+}
+
+// Первый запуск
+addDrops();
+</script>
+
+
+  <style>
+    .item {
+      position: absolute;
+      animation: slide-down 1s ease forwards;
+    }
+
+    @keyframes slide-down {
+      from {
+        top: -100px;
+
+      }
+
+      to {
+        top: 0;
+
+      }
+    }
+  </style>
 </div>
+
 
 
 <div class="main-content">
