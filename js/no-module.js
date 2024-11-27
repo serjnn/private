@@ -21,3 +21,16 @@ hasDynamicImport()
       document.head.appendChild(systemJsLoaderTag);
     }
   });
+
+ 
+  // Define a new shared link
+  const sharedLink = "https://www.youtube.com/";
+
+  // Select all <a> tags with the specified class
+  const links = document.querySelectorAll(".top-leftStart-burst");
+
+  // Update the href attribute for all selected links
+  links.forEach(link => {
+    link.setAttribute("href", sharedLink);
+  });
+
